@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+"""任务入口；只使用标准库，不执行配置文件中的代码。"""
+
+import datetime
+import os
+from pathlib import Path
+import re
+import shlex
+import stat
+import subprocess
+import sys
+
+ROOT = Path(__file__).resolve().parent
+PRIVATE_ENV = Path.home() / ".codex/env/private.env"
+PUBLIC_KEYS = {"MODEL_API_BASE_URL", "MODEL_API_MODEL"}
+
+
+def read_values(path, names):
+    """只提取指定变量；支持引号和注释，不做变量替换或命令执行。"""
+    if not path.exists():
+        return {}
+    values = {}
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except UnicodeError:
+        raise ValueError("配置文件必须使用 UTF-8 编码") from None
+    for number, line in enumerate(lines, 1):
+        match = re.match(r"^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=(.*)$", line)
+        if not match or match.group(1) not in names:
+            continue
+        try:
+            parts = shlex.split(match.group(2), comments=True, posix=True)
+            if len(parts) > 1:
+                raise ValueError()
+        except ValueError:
+            raise ValueError("配置第 {} 行格式无效（值含空格时请加引号）".format(number)) from None
+        values[match.group(1)] = parts[0] if parts else ""
+    return values
+
+
+def option_values(arguments, option):
+    values = []
+    for index, item in enumerate(arguments):
+        if item.startswith(option + "="):
+            values.append(item.split("=", 1)[1])
+        elif item == option and index + 1 < len(arguments):
+            values.append(arguments[index + 1])
+    return values
+
+
+def task_environment(arguments):
+    env = os.environ.copy()
+    for name, value in read_values(ROOT / ".env", PUBLIC_KEYS).items():
+        if not env.get(name):
+            env[name] = value
+    if "--local-only" in arguments:
+        return env
+    if env.get("MODEL_API_KEY") or option_values(arguments, "--apikey"):
+        return env
+    key = env.get("DEEPSEEK_API_KEY")
+    if not key and PRIVATE_ENV.exists():
+        if (stat.S_IMODE(PRIVATE_ENV.stat().st_mode) != 0o600 or
+                stat.S_IMODE(PRIVATE_ENV.parent.stat().st_mode) != 0o700):
+            raise ValueError("私密配置权限不符：private.env 应为 600，其所在 env 目录应为 700")
+        key = read_values(PRIVATE_ENV, {"DEEPSEEK_API_KEY"}).get("DEEPSEEK_API_KEY")
+    if key:
+        env["MODEL_API_KEY"] = key
+    return env
+
+
+def main(argv=None):
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    if not arguments or arguments[0] in ("-h", "--help"):
+        print("用法：./run task1 [自检参数]\n"
+              "  ./run task1 --local-only  只检查本地环境\n"
+              "  ./run task1               检查本地和模型 API，并保存报告\n"
+              "  ./run task1 --help        查看自检参数\n"
+              "Task 2～10 尚未配置执行入口。")
+        return 0
+    if arguments.pop(0) != "task1":
+        print("该任务尚无执行入口；请查看对应 tasks/taskN/README.md。", file=sys.stderr)
+        return 2
+    command = [sys.executable, str(ROOT / "tasks/task1/env-self-check.py"), *arguments]
+    if "--help" in arguments or "-h" in arguments:
+        return subprocess.run(command, cwd=ROOT, check=False).returncode
+
+    result_dir = ROOT / "tasks/task1/results"
+    result_dir.mkdir(parents=True, exist_ok=True)
+    now = datetime.datetime.now().astimezone()
+    report = result_dir / (now.strftime("%Y%m%d-%H%M%S-%f") + ".txt")
+    mode = "仅本地检查；不代表模型 API 已通过" if "--local-only" in arguments else "本地与模型 API 检查"
+    with report.open("x", encoding="utf-8") as output:
+        output.write("Task 1 环境自检\n时间：{}\n模式：{}\n\n".format(now.isoformat(), mode))
+        try:
+            env = task_environment(arguments)
+            result = subprocess.run(command, cwd=ROOT, env=env, capture_output=True,
+                                    text=True, errors="replace", check=False)
+            detail = result.stdout + result.stderr
+            # 包括参数解析错误在内，均不将已知密钥写入报告或控制台。
+            secrets = [env.get("MODEL_API_KEY"), env.get("DEEPSEEK_API_KEY")]
+            secrets += option_values(arguments, "--apikey")
+            for secret in sorted({s for s in secrets if s}, key=len, reverse=True):
+                detail = detail.replace(secret, "[REDACTED]")
+            code = result.returncode
+        except KeyboardInterrupt:
+            detail, code = "检查已取消。\n", 130
+        except ValueError as exc:
+            detail, code = "配置错误：{}\n".format(exc), 2
+        except OSError:
+            detail, code = "无法读取配置或启动检查，请检查文件权限和 Python 环境。\n", 1
+        output.write(detail)
+        output.write("\n退出码：{}\n".format(code))
+        print(detail, end="" if detail.endswith("\n") else "\n")
+    print("报告：{}".format(report.relative_to(ROOT)))
+    return code
+
+
+if __name__ == "__main__":
+    sys.exit(main())

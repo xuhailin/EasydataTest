@@ -1,0 +1,14 @@
+Task 1 环境自检
+时间：2026-09-14T10:32:49.342791+08:00
+模式：仅本地检查；不代表模型 API 已通过
+
+环境自检：Shell / Python / Git / 模型 API
+[通过] Shell：/bin/zsh，命令执行正常
+[通过] Python：Python 3.9.6；/Applications/Xcode.app/Contents/Developer/usr/bin/python3（未检查项目第三方依赖）
+[通过] Git：git version 2.39.5 (Apple Git-154)；仓库可读，有未提交变更（未检查远程权限）
+[跳过] 模型 API：按 --local-only 跳过，没有发送 API 请求
+
+汇总：通过 3，失败 0，提醒 0，跳过 1
+本地自检完成。
+
+退出码：0

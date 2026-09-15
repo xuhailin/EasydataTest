@@ -35,18 +35,25 @@ P1 正文另附课后小测，I1 另附 5 道思考题。以上是课程正文�
 - [D1 成功报告](results/20260915-113114-d1.json)：4 项通过、0 项失败、0 项跳过；5 次真实模型请求。
 - [首次失败报告](results/20260915-113034-d1.json)：缺少 SOCKS 代理依赖，模型客户端初始化失败，未发送模型请求；补装 socksio 后重跑通过。
 - [任务运行脚本](run_d1.py) 与 [本次依赖版本](requirements.txt)。官方源码保持原样，复用官方 run_demo，模型初始化改用项目 DeepSeek 配置。d1_4 使用模拟知识库及官方 legacy user 消息回传模式。
+- 模型连接和报告保存已提取到公共 [course_runtime.py](../../course_runtime.py)，后续任务接入见 [共用运行模块说明](../../docs/course-runtime.md)。Task 2 脚本负责示例选择、课程源码记录和各项成功条件。
 
 从项目根目录执行（会调用真实模型 API）：
 
 ```bash
 uv venv --python 3.11 .venv
 uv pip install --python .venv/bin/python -r tasks/task2/requirements.txt
+# 已有 .venv 和依赖时，只需下面这条：
 .venv/bin/python tasks/task2/run_d1.py
+
+# 只运行基础调用；仍会调用真实 API
+.venv/bin/python tasks/task2/run_d1.py --example d1_1_base
 ```
 
 需有同级官方课程仓库；本次使用课程提交 `705e32bd071e79a94b805adf71ae6c377da75c98`，报告保留源码哈希。运行脚本只从项目 .env 读取 MODEL_API_BASE_URL、MODEL_API_MODEL，从用户私密配置读取 DEEPSEEK_API_KEY，不回显或保存密钥；不改动根目录 run 或 Task 1 运行入口。
 
 2026-09-15：Python 3.11.15、macOS；LangChain 1.4.0，langchain-openai 1.6.2，依赖一致性检查通过。实际报告中的 PASS 表示上述调用链路检查通过，不代表模型回答已完成全面事实评测或课程整体验收。
+
+公共模块提取后的验证为离线测试：用模拟模型执行上述官方示例，检查报告及失败场景；未重新调用真实 DeepSeek API，11:31 成功报告仍属于提取前的执行证据。
 
 ## 成果与心得网页
 

@@ -1,6 +1,6 @@
 # EasyData Agent 学习任务成果
 
-按 Task 归档要求、代码、验证证据、笔记与提交记录。当前已配置 Task 1 执行入口，Task 2～9 根据课程截图建立占位，Task 10 内容待确认。
+按 Task 归档要求、代码、验证证据、笔记与提交记录。Task 1 提供环境自检入口，Task 2 提供官方 D1 示例适配入口；其他任务进展以各自 README 为准。
 
 ## 学习资料
 
@@ -70,6 +70,7 @@ DEEPSEEK_API_KEY=你的真实密钥
 ## 目录和任务
 
 - `run`：配置加载、Task 1 调用、结果归档。
+- `course_runtime.py`：课程示例共用的 DeepSeek 客户端与报告保存，Task 2 已接入；[复用方式](docs/course-runtime.md)。
 - `tasks/taskN/README.md`：任务要求、产物入口与完成状态。
 - `tasks/task1/notes.md`：阅读记录及用户心得。
 - `tasks/task1/submission.md`：表单事实材料和提交记录。

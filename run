@@ -4,38 +4,15 @@
 import datetime
 import os
 from pathlib import Path
-import re
-import shlex
 import stat
 import subprocess
 import sys
 
+from env_config import read_values
+
 ROOT = Path(__file__).resolve().parent
 PRIVATE_ENV = Path.home() / ".codex/env/private.env"
 PUBLIC_KEYS = {"MODEL_API_BASE_URL", "MODEL_API_MODEL"}
-
-
-def read_values(path, names):
-    """只提取指定变量；支持引号和注释，不做变量替换或命令执行。"""
-    if not path.exists():
-        return {}
-    values = {}
-    try:
-        lines = path.read_text(encoding="utf-8").splitlines()
-    except UnicodeError:
-        raise ValueError("配置文件必须使用 UTF-8 编码") from None
-    for number, line in enumerate(lines, 1):
-        match = re.match(r"^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=(.*)$", line)
-        if not match or match.group(1) not in names:
-            continue
-        try:
-            parts = shlex.split(match.group(2), comments=True, posix=True)
-            if len(parts) > 1:
-                raise ValueError()
-        except ValueError:
-            raise ValueError("配置第 {} 行格式无效（值含空格时请加引号）".format(number)) from None
-        values[match.group(1)] = parts[0] if parts else ""
-    return values
 
 
 def option_values(arguments, option):

@@ -2,6 +2,15 @@
 
 按 Task 归档要求、代码、验证证据、笔记与提交记录。当前已配置 Task 1 执行入口，Task 2～9 根据课程截图建立占位，Task 10 内容待确认。
 
+## 学习资料
+
+- 官方课程仓库：[datawhalechina/easy-data-x-ai](https://github.com/datawhalechina/easy-data-x-ai)。
+- 本机克隆位置：`../easy-data-x-ai`（与本项目同级，独立 Git 仓库）。
+- [本地课程首页](../easy-data-x-ai/README.md)；[在线课程](https://datawhalechina.github.io/easy-data-x-ai/)。
+- [资料关联与 Task 1 要求核对](docs/course-materials.md)。
+
+后续学习先对照官方仓库的正文与示例代码，任务产物、运行报告和个人笔记仍归档在本项目。组队学习的 Task 编号与课程章节编号分开记录，映射以任务安排为准。
+
 ## 快速开始
 
 需要 Python 3.9+、Shell 和 Git；Task 1 仅使用 Python 标准库，无需安装依赖。
@@ -68,6 +77,22 @@ DEEPSEEK_API_KEY=你的真实密钥
 - [课程安排](docs/schedule.md)、[任务流程与设计约定](docs/workflow.md)。
 
 后续任务按需增加自己的脚本、依赖和结果；不是每个学习任务都必须有可执行入口。
+
+## 成果与心得网页
+
+已配置静态成果站：首页列出 Task 1～10，每个 Task 有独立页面。心得复用已有 `notes.md`，成果摘要与附件按发布清单选取。
+
+- [成果站首页](https://xuhailin.github.io/EasydataTest/)
+- [内容维护、本地预览与发布说明](docs/showcase-site.md)
+
+仓库已公开，成果站通过 GitHub Actions 发布；部署结果以 Actions 与实际网页为准。具体学习状态仍以各 Task README 与实际证据为准。
+
+## 报名资料配置
+
+fork 后可使用自己的报名资料，无需修改代码。昵称、队名、群号和群内链接从个人环境配置读取；课程、评分与笔记链接模板使用项目的非敏感配置。
+
+- [变量说明与配置步骤](docs/registration-config.md)
+- `python3 submission_config.py --check`：仅检查是否配置，不显示真实值，不填写或提交表单。
 
 ## 开发验证
 

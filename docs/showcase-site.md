@@ -79,7 +79,7 @@ python3 -m venv .venv-site
 - Playwright 检查首页、Task 1、Task 2、Task 10 在 1365、320、360、390 像素宽度下的布局，未发现页面横向溢出；已查看桌面与手机截图，并验证目录进入 Task 1。
 - 未登记的内部链接、越出任务目录的文件路径均被构建器拒绝。
 - `python3 -m unittest discover -s tests -v`：现有 8 项测试通过。没有修改任务运行入口，也没有调用真实模型 API。
-- `git diff --check` 通过。尚未提交、推送或部署；GitHub 托管环境、真实线上链接和用户验收待完成。
+- `git diff --check` 通过。以上为首次本地验证记录，当时尚未提交、推送或部署；后续线上结果见下方发布记录。用户对展示内容的验收仍由实际阅读确认。
 
 ## 公开前检查（2026-09-15）
 
@@ -95,3 +95,12 @@ python3 -m venv .venv-site
 - 13 项单元测试通过，覆盖固定字段读取优先级、只提取报名变量、私密文件权限、不执行配置内容、禁止项目 `.env` 保存个人字段、链接模板和检查输出脱敏。
 - `./run task1 --local-only`：本地 3 项通过、API 跳过，未调用真实模型。配置解析器抽取为 `env_config.py` 后，原有 Task 1 流程保持可用。
 - 实际报名配置检查就绪，真实值没有输出；本次没有填写或提交表单。
+
+## 发布记录（2026-09-15）
+
+- 网站：[学习成果与心得](https://xuhailin.github.io/EasydataTest/)。Task 页面为 `https://xuhailin.github.io/EasydataTest/taskN/`。
+- 发布提交：`8f5e330`；[GitHub Actions 部署记录](https://github.com/xuhailin/EasydataTest/actions/runs/34924296870) 的 build、deploy 均成功。
+- 线上首页、10 个 Task 页面、CSS、图标与选定报告均返回 HTTP 200，逐文件内容与本地构建一致。
+- 仓库 About 首页已设置为成果站；`PUBLISH_PAGES=true` 已配置，后续推送 `main` 中相关内容会触发发布。其他 fork 若修改默认分支，也需要同步调整工作流中的分支名。
+- 历史根提交已替换为 `bf50b01`，当前分支所有提交的作者、提交者邮箱使用 GitHub noreply；历史群内任务链接已清理。原始历史仅保留在本机私密备份中，不作为仓库分支或标签推送。该处理不保证 GitHub 的旧提交缓存立即不可访问。
+- 本机 `.env` 已配置已验证网站的笔记链接模板，后续按 Task 生成对应网页链接；个人报名字段继续从私密文件读取。

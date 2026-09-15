@@ -4,7 +4,8 @@
 - 天数：3 天。
 - 截止时间：09月20日 03:00（截图原文，年份和时区未确认）。
 - 状态：学习进行中；2026-09-15 已保存用户确认的 [学习心得](notes.md)（D1、I1 相关）。
-- 实践与验证：尚无本任务运行证据；课后行动完成情况待确认。
+- 实践与验证：已收录 [实践成果](showcase.md)；P1 完成 4 个问题的阶段性评估，D1 的 d1_1～d1_4 使用真实 DeepSeek 模型运行通过。
+- 未完成范围：P1 尚未补足 10 个问题和完整 Checklist；d1_5、d1_6 未运行；I1 数据底座评审按用户选择本次不写，I1 心得保留。
 - 提交记录：尚无提交成功记录。
 
 来源见 [课程安排](../../docs/schedule.md)。
@@ -28,7 +29,24 @@ P1 正文另附课后小测，I1 另附 5 道思考题。以上是课程正文�
 - [D1 示例代码](../../../easy-data-x-ai/code/D1)
 - [I1 正文](../../../easy-data-x-ai/docs/industry/I1%20课程稿：AI%20原生数据库基础.md)
 
-说明：实际运行需按代码与依赖说明准备环境，密钥遵循本项目私密资料规则；本次只整理心得和任务说明，未运行真实模型 API。
+## 实践记录与复现
+
+- [P1 场景评估](p1-assessment.md)：根据用户真实工作流程整理，事实和助手分析分开标明。
+- [D1 成功报告](results/20260915-113114-d1.json)：4 项通过、0 项失败、0 项跳过；5 次真实模型请求。
+- [首次失败报告](results/20260915-113034-d1.json)：缺少 SOCKS 代理依赖，模型客户端初始化失败，未发送模型请求；补装 socksio 后重跑通过。
+- [任务运行脚本](run_d1.py) 与 [本次依赖版本](requirements.txt)。官方源码保持原样，复用官方 run_demo，模型初始化改用项目 DeepSeek 配置。d1_4 使用模拟知识库及官方 legacy user 消息回传模式。
+
+从项目根目录执行（会调用真实模型 API）：
+
+```bash
+uv venv --python 3.11 .venv
+uv pip install --python .venv/bin/python -r tasks/task2/requirements.txt
+.venv/bin/python tasks/task2/run_d1.py
+```
+
+需有同级官方课程仓库；本次使用课程提交 `705e32bd071e79a94b805adf71ae6c377da75c98`，报告保留源码哈希。运行脚本只从项目 .env 读取 MODEL_API_BASE_URL、MODEL_API_MODEL，从用户私密配置读取 DEEPSEEK_API_KEY，不回显或保存密钥；不改动根目录 run 或 Task 1 运行入口。
+
+2026-09-15：Python 3.11.15、macOS；LangChain 1.4.0，langchain-openai 1.6.2，依赖一致性检查通过。实际报告中的 PASS 表示上述调用链路检查通过，不代表模型回答已完成全面事实评测或课程整体验收。
 
 ## 成果与心得网页
 

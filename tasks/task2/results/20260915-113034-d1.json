@@ -1,0 +1,69 @@
+{
+  "started_at": "2026-09-15T11:30:34.114038+08:00",
+  "python": "3.11.15",
+  "platform": "Darwin",
+  "packages": {
+    "langchain": "1.4.0",
+    "langchain-openai": "1.6.2",
+    "langchain-core": "1.6.3",
+    "python-dotenv": "1.2.3"
+  },
+  "course_commit": "705e32bd071e79a94b805adf71ae6c377da75c98",
+  "model": "deepseek-v4-pro",
+  "base_url": "https://api.deepseek.com",
+  "adaptation": "原样执行官方 run_demo；模型初始化改用项目 DeepSeek 配置。未执行官方 main 的 SiliconFlow 配置入口。",
+  "limits": {
+    "timeout_seconds": 90,
+    "max_retries": 0,
+    "max_tokens_per_request": 2048,
+    "tool_rounds": 5
+  },
+  "tool_protocol": "保留官方 d1_4 的 legacy_user_message_fallback=True，工具结果以 user 消息回传，未验证标准 ToolMessage 路径。",
+  "source_sha256": {
+    "d1_1_base.py": "3610e59f1179cf5e04ebe8135830a8c2d84ddc7fe38277392a5c53bb244ffa5a",
+    "d1_2_multi_turn.py": "e2b278807e9cec64576e56ea0a64cc1cdb13275f11ac97c3c47b1f080c74f82c",
+    "d1_3_streaming.py": "98d72d33ebe0fae1dcab52de51e84a6e7c71e88cca5bff5dc44a97b4524c4c55",
+    "d1_4_tool_use_mock.py": "6faa790d650a1404a31b45f964a4a0c922508cfecba96dc36050fe15795056b1",
+    "tool_call_loop.py": "458b6544a847c218860777e278d8c38d128578872c2cb43dbf2253c7efb7ced4",
+    "../config.py": "589d851e13672bea2278b4ef855a5fff02c89bd198b82b8d24f4f3f5351da128"
+  },
+  "examples": [
+    {
+      "name": "d1_1_base",
+      "events": [],
+      "tool_results": [],
+      "status": "FAIL",
+      "error": "ImportError: Using SOCKS proxy, but the 'socksio' package is not installed. Make sure to install httpx using `pip install httpx[socks]`.",
+      "output": "",
+      "seconds": 0.138
+    },
+    {
+      "name": "d1_2_multi_turn",
+      "events": [],
+      "tool_results": [],
+      "status": "FAIL",
+      "error": "ImportError: Using SOCKS proxy, but the 'socksio' package is not installed. Make sure to install httpx using `pip install httpx[socks]`.",
+      "output": "",
+      "seconds": 0.002
+    },
+    {
+      "name": "d1_3_streaming",
+      "events": [],
+      "tool_results": [],
+      "status": "FAIL",
+      "error": "ImportError: Using SOCKS proxy, but the 'socksio' package is not installed. Make sure to install httpx using `pip install httpx[socks]`.",
+      "output": "",
+      "seconds": 0.003
+    },
+    {
+      "name": "d1_4_tool_use_mock",
+      "events": [],
+      "tool_results": [],
+      "status": "FAIL",
+      "error": "ImportError: Using SOCKS proxy, but the 'socksio' package is not installed. Make sure to install httpx using `pip install httpx[socks]`.",
+      "output": "",
+      "seconds": 0.004
+    }
+  ],
+  "finished_at": "2026-09-15T11:30:34.264956+08:00"
+}

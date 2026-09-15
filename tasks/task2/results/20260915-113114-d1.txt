@@ -1,0 +1,182 @@
+{
+  "started_at": "2026-09-15T11:31:03.516307+08:00",
+  "python": "3.11.15",
+  "platform": "Darwin",
+  "packages": {
+    "langchain": "1.4.0",
+    "langchain-openai": "1.6.2",
+    "langchain-core": "1.6.3",
+    "python-dotenv": "1.2.3"
+  },
+  "course_commit": "705e32bd071e79a94b805adf71ae6c377da75c98",
+  "model": "deepseek-v4-pro",
+  "base_url": "https://api.deepseek.com",
+  "adaptation": "原样执行官方 run_demo；模型初始化改用项目 DeepSeek 配置。未执行官方 main 的 SiliconFlow 配置入口。",
+  "limits": {
+    "timeout_seconds": 90,
+    "max_retries": 0,
+    "max_tokens_per_request": 2048,
+    "tool_rounds": 5
+  },
+  "tool_protocol": "保留官方 d1_4 的 legacy_user_message_fallback=True，工具结果以 user 消息回传，未验证标准 ToolMessage 路径。",
+  "source_sha256": {
+    "d1_1_base.py": "3610e59f1179cf5e04ebe8135830a8c2d84ddc7fe38277392a5c53bb244ffa5a",
+    "d1_2_multi_turn.py": "e2b278807e9cec64576e56ea0a64cc1cdb13275f11ac97c3c47b1f080c74f82c",
+    "d1_3_streaming.py": "98d72d33ebe0fae1dcab52de51e84a6e7c71e88cca5bff5dc44a97b4524c4c55",
+    "d1_4_tool_use_mock.py": "6faa790d650a1404a31b45f964a4a0c922508cfecba96dc36050fe15795056b1",
+    "tool_call_loop.py": "458b6544a847c218860777e278d8c38d128578872c2cb43dbf2253c7efb7ced4",
+    "../config.py": "589d851e13672bea2278b4ef855a5fff02c89bd198b82b8d24f4f3f5351da128"
+  },
+  "examples": [
+    {
+      "name": "d1_1_base",
+      "events": [
+        {
+          "method": "invoke",
+          "input_messages": 2,
+          "seconds": 1.595,
+          "usage": {
+            "input_tokens": 24,
+            "output_tokens": 35,
+            "total_tokens": 59,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {}
+          }
+        }
+      ],
+      "tool_results": [],
+      "status": "PASS",
+      "output": "RAG（检索增强生成）是一种结合信息检索与语言模型生成的技术，先从外部知识库检索相关内容，再让模型基于这些内容生成更准确的回答。\n",
+      "seconds": 2.354
+    },
+    {
+      "name": "d1_2_multi_turn",
+      "events": [
+        {
+          "method": "invoke",
+          "input_messages": 4,
+          "seconds": 2.196,
+          "usage": {
+            "input_tokens": 47,
+            "output_tokens": 72,
+            "total_tokens": 119,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {}
+          }
+        }
+      ],
+      "tool_results": [],
+      "status": "PASS",
+      "output": "主要区别：\n\n- **RAG**：从知识库里检索最相关的片段，只把选中的内容放进 Prompt，省 token、更精准。\n- **直接塞全文**：把整份文档放进 Prompt，简单直接，但文档长会超限、成本高、干扰也多。\n\nRAG 适合文档量大或频繁更新的场景。\n",
+      "seconds": 2.199
+    },
+    {
+      "name": "d1_3_streaming",
+      "events": [
+        {
+          "method": "stream",
+          "input_messages": 2,
+          "chunks": 61,
+          "content_chunks": 58,
+          "tool_calls": [],
+          "first_content_seconds": 0.624,
+          "seconds": 1.913,
+          "usage": {
+            "input_tokens": 17,
+            "output_tokens": 58,
+            "total_tokens": 75,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {}
+          }
+        }
+      ],
+      "tool_results": [],
+      "status": "PASS",
+      "output": "向量数据库是一种专门用于存储、索引和查询高维向量数据的数据库系统。它通过计算向量之间的相似度（如余弦相似度或欧氏距离）来快速检索最相关的数据。它广泛应用于大语言模型、图像检索、推荐系统等需要语义匹配的场景。\n",
+      "seconds": 1.914
+    },
+    {
+      "name": "d1_4_tool_use_mock",
+      "events": [
+        {
+          "method": "stream",
+          "input_messages": 2,
+          "chunks": 35,
+          "content_chunks": 0,
+          "tool_calls": [
+            {
+              "name": "query_knowledge_base",
+              "args": {
+                "query": "seekdb 支持的检索方式有哪些"
+              },
+              "id": "call_00_Z0bAyjewKJa8CW9ErSti5127",
+              "type": "tool_call"
+            },
+            {
+              "name": "query_knowledge_base",
+              "args": {
+                "query": "seekdb 混合检索的实现原理"
+              },
+              "id": "call_01_h45xTY0uk9E5Uq1cYVUN9780",
+              "type": "tool_call"
+            }
+          ],
+          "seconds": 2.079,
+          "usage": {
+            "input_tokens": 310,
+            "output_tokens": 91,
+            "total_tokens": 401,
+            "input_token_details": {
+              "cache_read": 0
+            },
+            "output_token_details": {}
+          }
+        },
+        {
+          "method": "stream",
+          "input_messages": 4,
+          "chunks": 67,
+          "content_chunks": 64,
+          "tool_calls": [],
+          "first_content_seconds": 0.923,
+          "seconds": 2.201,
+          "usage": {
+            "input_tokens": 445,
+            "output_tokens": 64,
+            "total_tokens": 509,
+            "input_token_details": {
+              "cache_read": 256
+            },
+            "output_token_details": {}
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "name": "query_knowledge_base",
+          "args": {
+            "query": "seekdb 支持的检索方式有哪些"
+          },
+          "result": "seekdb 支持关键词、语义向量和混合检索。\n\nseekdb 支持嵌入模式和服务器模式。"
+        },
+        {
+          "name": "query_knowledge_base",
+          "args": {
+            "query": "seekdb 混合检索的实现原理"
+          },
+          "result": "seekdb 支持关键词、语义向量和混合检索。"
+        }
+      ],
+      "status": "PASS",
+      "output": ">>> 用户提问：seekdb 支持哪些检索方式？混合检索是怎么实现的？\n>>> 模型决定调用工具：query_knowledge_base\n>>> 工具参数：{'query': 'seekdb 支持的检索方式有哪些'}\n\n>>> 知识库检索结果：\nseekdb 支持关键词、语义向量和混合检索。\n\nseekdb 支持嵌入模式和服务器模式。\n\n>>> 模型决定调用工具：query_knowledge_base\n>>> 工具参数：{'query': 'seekdb 混合检索的实现原理'}\n\n>>> 知识库检索结果：\nseekdb 支持关键词、语义向量和混合检索。\n\n>>> 模型最终回答：\nseekdb 支持关键词检索、语义向量检索和混合检索，并且提供嵌入模式和服务器模式两种运行模式。\n\n关于混合检索的实现原理，知识库中暂未检索到更详细的说明，无法给出具体的技术实现细节。如果你需要，我可以帮你进一步查询或建议你查阅官方技术文档确认。\n",
+      "seconds": 4.284
+    }
+  ],
+  "finished_at": "2026-09-15T11:31:14.271872+08:00"
+}

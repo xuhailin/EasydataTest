@@ -33,7 +33,7 @@ python3 env-self-check.py
 
 ## 配置一次，以后自动读取
 
-项目 `.env` 保存非敏感配置：
+项目 `.env` 保存模型连接配置和本项目报名资料（不提交 Git）：
 
 ```dotenv
 MODEL_API_BASE_URL=https://api.deepseek.com
@@ -89,7 +89,7 @@ DEEPSEEK_API_KEY=你的真实密钥
 
 ## 报名资料配置
 
-fork 后可使用自己的报名资料，无需修改代码。昵称、队名、群号和群内链接从个人环境配置读取；课程、评分与笔记链接模板使用项目的非敏感配置。
+fork 后可使用自己的报名资料，无需修改代码。昵称、队名、群号、表单链接、课程和评分统一从本项目 `.env` 读取，不使用全局 `private.env`。模型 API 密钥仍按原规则存放。
 
 - [变量说明与配置步骤](docs/registration-config.md)
 - `python3 submission_config.py --check`：仅检查是否配置，不显示真实值，不填写或提交表单。

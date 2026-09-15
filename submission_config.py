@@ -3,15 +3,13 @@
 
 import os
 from pathlib import Path
-import stat
 import sys
 from urllib.parse import urlsplit
 
 from env_config import read_values
 
 ROOT = Path(__file__).resolve().parent
-PRIVATE_ENV = Path.home() / ".codex/env/private.env"
-PRIVATE_KEYS = {
+REGISTRATION_KEYS = {
     "EASYDATA_WECHAT_NICKNAME", "EASYDATA_TEAM_NAME", "EASYDATA_GROUP_NAME",
     "EASYDATA_CERTIFICATE_NICKNAME", "EASYDATA_FORM_URL", "EASYDATA_SCHEDULE_URL",
 }
@@ -23,22 +21,14 @@ DEFAULTS = {
 REQUIRED = {"EASYDATA_WECHAT_NICKNAME", "EASYDATA_TEAM_NAME", "EASYDATA_GROUP_NAME", "EASYDATA_FORM_URL", "EASYDATA_COURSE_NAME"}
 
 
-def load_profile(environ=None, project_env=None, private_env=None):
-    """Return only registration keys; never import model keys or login sessions."""
+def load_profile(environ=None, project_env=None):
+    """Read project-scoped registration fields; never access global private.env."""
     environ = os.environ if environ is None else environ
     project_env = ROOT / ".env" if project_env is None else Path(project_env)
-    private_env = PRIVATE_ENV if private_env is None else Path(private_env)
-    if any(read_values(project_env, PRIVATE_KEYS).values()):
-        raise ValueError("个人报名资料与群内链接请放入私密文件或进程环境变量，不要放入项目 .env")
+    keys = REGISTRATION_KEYS | set(DEFAULTS)
     values = dict(DEFAULTS)
-    values.update(read_values(project_env, set(DEFAULTS)))
-    needed = {key for key in PRIVATE_KEYS if not environ.get(key)}
-    if needed and private_env.exists():
-        if (stat.S_IMODE(private_env.stat().st_mode) != 0o600 or
-                stat.S_IMODE(private_env.parent.stat().st_mode) != 0o700):
-            raise ValueError("私密配置权限不符：private.env 应为 600，其所在 env 目录应为 700")
-        values.update(read_values(private_env, needed))
-    for key in PRIVATE_KEYS | set(DEFAULTS):
+    values.update(read_values(project_env, keys))
+    for key in keys:
         if environ.get(key):
             values[key] = environ[key]
     return values
@@ -85,12 +75,12 @@ def main():
         return 2
     try:
         profile = load_profile()
-        for key in sorted(PRIVATE_KEYS | set(DEFAULTS)):
+        for key in sorted(REGISTRATION_KEYS | set(DEFAULTS)):
             print(key + "：" + ("已配置" if profile.get(key) else "未配置"))
         validate_profile(profile)
     except (OSError, ValueError):
         # Avoid echoing filesystem paths, raw config, URLs or parser exception payloads.
-        print("报名配置未就绪：检查必填字段、HTTPS 地址、评分和私密文件权限。", file=sys.stderr)
+        print("报名配置未就绪：检查项目 .env 的必填字段、HTTPS 地址、评分和文件格式。", file=sys.stderr)
         return 2
     print("报名配置就绪；尚未填写或提交表单。")
     return 0

@@ -1,7 +1,7 @@
 [
   {"id": 1, "title": "环境准备与课前导读", "chapters": "F0 · F1 · F2", "result": "showcase.md", "notes": "notes.md", "attachments": ["results/20260914-104218-482332.txt"]},
   {"id": 2, "title": "场景识别、模型 API 与 AI 原生数据库", "chapters": "P1 · D1 · I1", "result": "showcase.md", "notes": "notes.md", "attachments": ["results/20260915-113114-d1.txt"]},
-  {"id": 3, "title": "RAG 产品设计与向量数据库", "chapters": "P2 · I2"},
+  {"id": 3, "title": "RAG 产品设计与向量数据库", "chapters": "P2 · I2", "notes": "notes.md"},
   {"id": 4, "title": "AI Native 数据层与 SQL × AI", "chapters": "D2 · I3"},
   {"id": 5, "title": "记忆系统与 File SQL", "chapters": "P3 · I4"},
   {"id": 6, "title": "Agentic RAG 与 AI 列", "chapters": "D3 · I5"},
